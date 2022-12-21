@@ -1,11 +1,11 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 const arrayFromTxtNewLines = (file, castToNumbers = false) => {
-  let txtArray;  
-  
-  if(!file) {
-    return []
+  let txtArray;
+
+  if (!file) {
+    return [];
   }
 
   const root = process.cwd();
@@ -14,11 +14,11 @@ const arrayFromTxtNewLines = (file, castToNumbers = false) => {
   try {
     txtArray = fs.readFileSync(filePath).toString().split("\n");
   } catch (error) {
-    console.error(`${filePath} -- does not exist`)
-    txtArray = []
+    console.error(`${filePath} -- does not exist`);
+    txtArray = [];
   }
 
   return castToNumbers ? txtArray.map(Number) : txtArray;
-}
+};
 
 module.exports = arrayFromTxtNewLines;
