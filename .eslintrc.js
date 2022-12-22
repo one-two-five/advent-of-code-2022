@@ -10,6 +10,14 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
   },
+  "no-param-reassign": [
+    "error",
+    {
+      props: true,
+      ignorePropertyModificationsFor: ["acc"],
+    },
+  ],
+
   rules: {
     "prettier/prettier": "error",
   },

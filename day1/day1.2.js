@@ -6,7 +6,8 @@ const day1 = (input) => {
     return acc;
   }, 0)
   );
- return Math.max(...sumOfElf)
+  const topThree = sumOfElf.sort((a,b) => b - a).slice(0,3)
+  return topThree.reduce((acc, cur) => acc+=cur)
 };
 
 module.exports = day1;
