@@ -8,20 +8,97 @@ test("should match example input", () => {
 });
 
 test("should match final input", () => {
-  // const input = readFile("./day3/input.txt");
-  // const result = day3.day3(input);
-  // expect(result).toBe(13448);
+  const input = readFile("./day3/input.txt");
+  const result = day3.day3(input);
+  expect(result).toBe(8053);
 });
 
-describe('getPriority', () => {
-  test('should get correct priority', () => {
-    const charaters = ['a','b','c','d','e','f','g','h','i','j','k','l','m',
-    'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D',
-    'E','F','G','H','I','J','K','L','M','N','O','P','Q',
-    'R','S','T','U','V','W','X','Y','Z']
-  
+describe("getScore", () => {
+  test("should get correct priority", () => {
+    const charaters = [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+      "i",
+      "j",
+      "k",
+      "l",
+      "m",
+      "n",
+      "o",
+      "p",
+      "q",
+      "r",
+      "s",
+      "t",
+      "u",
+      "v",
+      "w",
+      "x",
+      "y",
+      "z",
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I",
+      "J",
+      "K",
+      "L",
+      "M",
+      "N",
+      "O",
+      "P",
+      "Q",
+      "R",
+      "S",
+      "T",
+      "U",
+      "V",
+      "W",
+      "X",
+      "Y",
+      "Z",
+    ];
+
     charaters.forEach((char, index) => {
-      expect(day3.getPriority(char)).toBe(index + 1)
-    })
+      expect(day3.getScore(char)).toBe(index + 1);
+    });
+  });
+});
+
+describe("splitString", () => {
+  test("should return string in two halfs if even length", () => {
+    const str = "abcdeABCDE";
+    expect(day3.splitString(str)).toEqual([
+      ["a", "b", "c", "d", "e"],
+      ["A", "B", "C", "D", "E"],
+    ]);
+  });
+  test("should return empty array if length is odd", () => {
+    const str = "abcdeABCD";
+    expect(day3.splitString(str)).toStrictEqual([]);
+  });
+});
+
+describe("findDuplicateChar", () => {
+  test("should find duplicate in 2 strings", () => {
+    expect(
+      day3.findDuplicateChar(["a", "b", "c", "d"], ["a", "e", "f", "g"])
+    ).toBe("a");
+  });
+  test("should return empty string if no duplicate", () => {
+    expect(
+      day3.findDuplicateChar(["a", "b", "c", "d"], ["z", "e", "f", "g"])
+    ).toBe("");
   });
 });
