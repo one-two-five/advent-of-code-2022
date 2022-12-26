@@ -1,4 +1,11 @@
-const { day5, processInput, moveCrates, getTopCrates } = require("./day5.1");
+const {
+  day5,
+  processInput,
+  moveCrates,
+  getTopCrates,
+  getTopCrateIndex,
+  moveCrate,
+} = require("./day5.1");
 const readFile = require("../utils/readFile");
 
 test("should match example input", () => {
@@ -8,9 +15,9 @@ test("should match example input", () => {
 });
 
 test("should match final input", () => {
-  // const input = readFile("./day4/input.txt");
-  // const result = day4(input);
-  // expect(result).toBe(595);
+  const input = readFile("./day5/input.txt");
+  const result = day5(input);
+  expect(result).toBe("CMZ");
 });
 
 describe("processInput", () => {
@@ -37,64 +44,192 @@ describe("processInput", () => {
 });
 
 describe("moveCrates", () => {
-  let state = [
-    ["[Z]", "[M]", "[P]"],
-    ["[N]", "[C]", ""],
-    ["", "[D]", ""],
-  ];
-
   test("should move 1 from 2 to 1", () => {
     const instruction = [1, [2, 1]];
+    let initialState = [
+      ["[Z]", "[M]", "[P]"],
+      ["[N]", "[C]", ""],
+      ["", "[D]", ""],
+    ];
     const expectedState = [
       ["[Z]", "[M]", "[P]"],
       ["[N]", "[C]", ""],
       ["[D]", "", ""],
     ];
-    expect(moveCrates(state, instruction)).toStrictEqual(expectedState);
+    expect(moveCrates(initialState, instruction)).toStrictEqual(expectedState);
   });
 
   test("should move 3 from 1 to 3", () => {
     const instruction = [3, [1, 3]];
+    const initialState = [
+      ["[Z]", "[M]", "[P]"],
+      ["[N]", "[C]", ""],
+      ["[D]", "", ""],
+    ];
     const expectedState = [
       ["", "[M]", "[P]"],
       ["", "[C]", "[D]"],
       ["", "", "[N]"],
       ["", "", "[Z]"],
     ];
-    expect(moveCrates(state, instruction)).toStrictEqual(expectedState);
+    expect(moveCrates(initialState, instruction)).toStrictEqual(expectedState);
   });
 
   test("should move 2 from 2 to 1", () => {
     const instruction = [2, [2, 1]];
+    const initialState = [
+      ["", "[M]", "[P]"],
+      ["", "[C]", "[D]"],
+      ["", "", "[N]"],
+      ["", "", "[Z]"],
+    ];
     const expectedState = [
       ["[C]", "", "[P]"],
       ["[M]", "", "[D]"],
       ["", "", "[N]"],
       ["", "", "[Z]"],
     ];
-    expect(moveCrates(state, instruction)).toStrictEqual(expectedState)
+    expect(moveCrates(initialState, instruction)).toStrictEqual(expectedState);
   });
 
   test("should move 1 from 1 to 2", () => {
     const instruction = [1, [1, 2]];
+    const initialState = [
+      ["[C]", "", "[P]"],
+      ["[M]", "", "[D]"],
+      ["", "", "[N]"],
+      ["", "", "[Z]"],
+    ];
     const expectedState = [
       ["[C]", "[M]", "[P]"],
       ["", "", "[D]"],
       ["", "", "[N]"],
       ["", "", "[Z]"],
     ];
-    expect(moveCrates(state, instruction)).toStrictEqual(expectedState)
+    expect(moveCrates(initialState, instruction)).toStrictEqual(expectedState);
+  });
+
+  test("should move 2 from 1 to 2", () => {
+    const instruction = [2, [1, 2]];
+    const initialState = [
+      ["[C]", "", "[P]"],
+      ["[M]", "", "[D]"],
+      ["", "", ""],
+      ["", "", ""],
+    ];
+    const expectedState = [
+      ["", "[M]", "[P]"],
+      ["", "[C]", "[D]"],
+      ["", "", ""],
+      ["", "", ""],
+    ];
+    expect(moveCrates(initialState, instruction)).toStrictEqual(expectedState);
+  });
+  test("should move 4 from 3 to 1", () => {
+    const instruction = [4, [3, 1]];
+    const initialState = [
+      ["[C]", "", "[P]"],
+      ["", "", "[D]"],
+      ["", "", "[M]"],
+      ["", "", "[Z]"],
+    ];
+    const expectedState = [
+      ["[C]", "", ""],
+      ["[Z]", "", ""],
+      ["[M]", "", ""],
+      ["[D]", "", ""],
+      ["[P]", "", ""],
+    ];
+    expect(moveCrates(initialState, instruction)).toStrictEqual(expectedState);
   });
 });
 
-describe('getTopCrates', () => {
-  test('should ', () => {
+describe("getTopCrates", () => {
+  test("should return top crates as string", () => {
     const state = [
       ["[C]", "[M]", "[P]"],
       ["", "", "[D]"],
       ["", "", "[N]"],
       ["", "", "[Z]"],
     ];
-    expect(getTopCrates(state)).toBe('CMZ')
+    expect(getTopCrates(state)).toBe("CMZ");
+  });
+});
+
+describe("getTopCrateIndex", () => {
+  let state = [
+    ["[Z]", "[M]", "[P]", ""],
+    ["[N]", "[C]", "", ""],
+    ["", "[D]", "", ""],
+  ];
+
+  test("should return top crate for given colum", () => {
+    expect(getTopCrateIndex(state, 1)).toBe(1);
+    expect(getTopCrateIndex(state, 2)).toBe(2);
+    expect(getTopCrateIndex(state, 3)).toBe(0);
+  });
+
+  test("should return 0 index if no crate", () => {
+    expect(getTopCrateIndex(state, 4)).toBe(-1);
+  });
+});
+
+describe("moveCrate", () => {
+  test("should move 1 from 2 to 1", () => {
+    const instruction = [1, [2, 1]];
+    let initialState = [
+      ["[Z]", "[M]", "[P]"],
+      ["[N]", "[C]", ""],
+      ["", "[D]", ""],
+    ];
+    const expectedState = [
+      ["[Z]", "[M]", "[P]"],
+      ["[N]", "[C]", ""],
+      ["[D]", "", ""],
+    ];
+    expect(moveCrate(initialState, instruction)).toStrictEqual(expectedState);
+  });
+  test("should move 1 from 2 to 3", () => {
+    const instruction = [1, [2, 3]];
+    const initialState = [
+      ["[Z]", "[M]", "[P]"],
+      ["[N]", "[C]", ""],
+      ["", "[D]", ""],
+    ];
+    const expectedState = [
+      ["[Z]", "[M]", "[P]"],
+      ["[N]", "[C]", "[D]"],
+      ["", "", ""],
+    ];
+    expect(moveCrate(initialState, instruction)).toStrictEqual(expectedState);
+  });
+  test("should move 1 from 1 to 3", () => {
+    const instruction = [1, [1, 3]];
+    const initialState = [
+      ["[Z]", "[M]", "[P]"],
+      ["[N]", "[C]", ""],
+      ["", "[D]", ""],
+    ];
+    const expectedState = [
+      ["[Z]", "[M]", "[P]"],
+      ["", "[C]", "[N]"],
+      ["", "[D]", ""],
+    ];
+    expect(moveCrate(initialState, instruction)).toStrictEqual(expectedState);
+  });
+  test("should move 1 from 3 to 1", () => {
+    const instruction = [1, [3, 1]];
+    const initialState = [
+      ["[Z]", "[M]", "[P]"],
+      ["[N]", "[C]", ""],
+      ["[D]", "", ""],
+    ];
+    const expectedState = [
+      ["[Z]", "[M]", ""],
+      ["[N]", "[C]", ""],
+      ["[D]", "", ""],
+      ["[P]", "", ""],
+    ];
+    expect(moveCrate(initialState, instruction)).toStrictEqual(expectedState);
   });
 });
