@@ -21,9 +21,10 @@ const getTopCrateIndex = (state, colum) => {
   return -1
 }
 
-const moveCrate = (state, instruction) => {
-  const [_, [startCol, endCol ]] = instruction
-  const crateIndex = getTopCrateIndex(state, startCol) === -1 ? 0 : getTopCrateIndex(state, startCol)
+const moveCrate = (state, instruction, count) => {
+  const [quantity, [startCol, endCol ]] = instruction
+  const topCrateIndex = getTopCrateIndex(state, startCol) === -1 ? 0 : getTopCrateIndex(state, startCol)
+  const crateIndex = (topCrateIndex - (quantity-1)) + count
   const moveToIndex = getTopCrateIndex(state, endCol) + 1
   const crate = state[crateIndex][startCol -1]
   if(moveToIndex > state.length - 1) {
@@ -39,7 +40,7 @@ const moveCrates = (state, instruction) => {
   let newState = state;
   const [quantity, [, ]] = instruction
   for (let count = 0; count < quantity; count++) {
-    newState = moveCrate(state, instruction)
+    newState = moveCrate(state, instruction, count)
   }
   return newState
 }
