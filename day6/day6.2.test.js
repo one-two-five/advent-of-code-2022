@@ -13,6 +13,5 @@ test("should match example input", () => {
 
 test("should match final input", () => {
   const input = readFile("./day6/input.txt");
-  const result = day6(input);
   expect(day6(input)).toBe(2974)
 });

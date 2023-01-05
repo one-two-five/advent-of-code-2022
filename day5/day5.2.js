@@ -65,4 +65,4 @@ const day5 = (input) => {
   return getTopCrates(state)
 };
 
-module.exports = { day5, processInput, moveCrates, getTopCrates, getTopCrateIndex, moveCrate, getTopCrates };
+module.exports = { day5, processInput, moveCrates, getTopCrates, getTopCrateIndex, moveCrate };

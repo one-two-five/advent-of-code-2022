@@ -63,7 +63,7 @@ const day2 = (input) => {
   inputArr.forEach((game) => {
     const [elfChoice, matchOutcome] = game;
     const myChoice = getShape(elfChoice, matchOutcome)
-    score+=calculateScore(elfChoice,myChoice)
+    score+=calculateScore(elfChoice, myChoice)
   });
   return score
 };
