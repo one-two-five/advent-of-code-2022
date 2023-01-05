@@ -26,7 +26,7 @@ const day7 = (input) => {
   const inputArr = input.split("\n");
 
   const dirData = {};
-  const dirTracker = [];
+  const dirTracker = ['/'];
   const spent = []
   
   inputArr.forEach((instruction) => {

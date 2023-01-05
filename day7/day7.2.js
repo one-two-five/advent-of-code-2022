@@ -1,14 +1,14 @@
 const handleInstruction = (dirTracker, dirData, instruction, spent) => {
   if (instruction.split(" ")[1] === "cd" && instruction.split(" ")[2] !== '..' && instruction !== "$ cd /") {
-    const dir = [...dirTracker,instruction.split(" ")[2]].join('/')
+    const dir = [dirTracker[dirTracker.length -1],instruction.split(" ")[2]].join('/')
     dirTracker.push(dir);
   }
-
+  
   if (instruction.split(" ")[2] === "..") {
     const popped = dirTracker.pop()
     spent.push(popped)
   }
-
+  
   if (Number.isInteger(parseInt(instruction.split(" ")[0]))) {
     const data = parseInt(instruction.split(" ")[0]);
     dirTracker.forEach((dir) => {
@@ -26,7 +26,7 @@ const day7 = (input) => {
   const inputArr = input.split("\n");
 
   const dirData = {};
-  const dirTracker = [];
+  const dirTracker = ['/'];
   const spent = []
   
   inputArr.forEach((instruction) => {
@@ -35,7 +35,10 @@ const day7 = (input) => {
   const dataArr = Object.keys(dirData).map(key => {
     return dirData[key]?.data
   })
-  return dataArr.filter(data => data <= 100000).reduce((acc, cur) => acc+=cur);
+  const totalSpace = dirData['/'].data
+  const freeSpaceNeeded = totalSpace + (30000000 - 70000000)
+  const freeSpace = dataArr.filter(data => data >= freeSpaceNeeded).sort((a,b) => b-a).pop()
+  return freeSpace;
 };
 
 module.exports = { day7, handleInstruction };

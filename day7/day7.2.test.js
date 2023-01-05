@@ -4,16 +4,27 @@ const readFile = require("../utils/readFile");
 test("should match example input", () => {
   const input = readFile("./day7/example.txt");
   const result = day7(input);
-  expect(result).toBe(95437);
+  expect(result).toBe(24933642);
 });
 
 test("should match final input", () => {
   const input = readFile("./day7/input.txt");
   const result = day7(input);
-  expect(result).toBe(1583951);
+  expect(result).toBe(214171);
 });
 
 describe("handleInstruction", () => {
+  test("should track dirs correctly", () => {
+    const input = readFile("./day7/example2.txt");
+    const inputArr = input.split('\n')
+    const dirTracker = [];
+    const dirData = {};
+    const spent = [];
+    inputArr.forEach(instruction => {
+      handleInstruction(dirTracker, dirData, instruction, spent);
+    });
+    expect(dirTracker).toStrictEqual(["/cmcrzdt", "/cmcrzdt/lnsgfnbr", "/cmcrzdt/lnsgfnbr/jtzw", "/cmcrzdt/lnsgfnbr/jtzw/nfz"]);
+  });
   test("should handle cd {dir}", () => {
     const dirTracker = ["a"];
     const dirData = {};
