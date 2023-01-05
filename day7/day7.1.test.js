@@ -10,13 +10,7 @@ test("should match example input", () => {
 test("should match final input", () => {
   const input = readFile("./day7/input.txt");
   const result = day7(input);
-  expect(result).toBe(1075948);
-});
-
-test("should match example 2", () => {
-  const input = readFile("./day7/example2.txt");
-  const result = day7(input);
-  expect(result).toBe(95937);
+  expect(result).toBe(1583951);
 });
 
 describe("handleInstruction", () => {
@@ -24,26 +18,50 @@ describe("handleInstruction", () => {
     const dirTracker = ["a"];
     const dirData = {};
     const instruction = "$ cd b";
+    const spent = [];
     handleInstruction(dirTracker, dirData, instruction);
-    expect(dirTracker).toStrictEqual(["a", "b"]);
+    expect(dirTracker).toStrictEqual(["a", "a/b"]);
     expect(dirData).toStrictEqual({});
+    expect(spent).toStrictEqual([]);
   });
   test("should add data to dir", () => {
-    const dirTracker = ["a", "b"];
-    const dirData = {a: {data : 50}};
+    const dirTracker = ["a", "a/b"];
+    const dirData = { a: { data: 50 } };
     const instruction = "50 d.log";
-    handleInstruction(dirTracker, dirData, instruction);
-    expect(dirTracker).toStrictEqual(["a", "b"]);
-    expect(dirData).toStrictEqual({ a: { data: 100 }, b: { data: 50 } });
+    const spent = [];
+    handleInstruction(dirTracker, dirData, instruction, spent);
+    expect(dirTracker).toStrictEqual(["a", "a/b"]);
+    expect(dirData).toStrictEqual({ "a": { data: 100 }, "a/b": { data: 50 } });
+    expect(spent).toStrictEqual([]);
+  });
+  test("should not add data to dir if dir in spent", () => {
+    const dirTracker = ["a", "a/b"];
+    const dirData = { "a": { data: 50 } };
+    const instruction = "50 d.log";
+    const spent = ["a"];
+    handleInstruction(dirTracker, dirData, instruction, spent);
+    expect(dirTracker).toStrictEqual(["a", "a/b"]);
+    expect(dirData).toStrictEqual({ "a": { data: 50 }, "a/b": { data: 50 } });
+    expect(spent).toStrictEqual(["a"]);
+  });
+  test("should not add data to dir if dir in spent 2", () => {
+    const dirTracker = ["a", "a/b"];
+    const dirData = { "a": { data: 50 }, "a/b": { data: 50 }};
+    const instruction = "50 d.log";
+    const spent = ["a/b"];
+    handleInstruction(dirTracker, dirData, instruction, spent);
+    expect(dirTracker).toStrictEqual(["a", "a/b"]);
+    expect(dirData).toStrictEqual({ "a": { data: 100 }, "a/b": { data: 50 } });
+    expect(spent).toStrictEqual(["a/b"]);
   });
   test("should handle cd ..", () => {
-    const dirTracker = ['a', 'b', 'c'];
-    const dirData = {a: {data : 50}};
+    const dirTracker = ["a", "a/b", "a/b/c"];
+    const dirData = { a: { data: 50 } };
     const instruction = "$ cd ..";
-    handleInstruction(dirTracker, dirData, instruction);
-    expect(dirTracker).toStrictEqual(['a', 'b']);
-    expect(dirData).toStrictEqual({a: {data : 50}});
+    const spent = [];
+    handleInstruction(dirTracker, dirData, instruction, spent);
+    expect(dirTracker).toStrictEqual(["a", "a/b"]);
+    expect(dirData).toStrictEqual({ a: { data: 50 } });
+    expect(spent).toStrictEqual(["a/b/c"]);
   });
 });
-
-
