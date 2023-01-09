@@ -4,7 +4,7 @@ const readFile = require("../utils/readFile");
 test("should match example input", () => {
   const input = readFile("./day8/example.txt");
   const result = day8(input);
-  expect(result).toBe(0);
+  expect(result).toBe(21);
 });
 
 test("should match final input", () => {
