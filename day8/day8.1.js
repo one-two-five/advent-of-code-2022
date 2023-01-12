@@ -38,12 +38,6 @@ const isTreeVisible = (row, splitIndex, treeHeight) => {
   return treeIsVisible;
 };
 
-const setTree = (treesVisible, rowIndex, colIndex) => {
-  const treesVisibleCopy = cloneDeep(treesVisible);
-  treesVisibleCopy[rowIndex][colIndex] = 1;
-  return treesVisibleCopy;
-};
-
 const day8 = (input) => {
   const treeArray = input.split("\n").map((row) => row.split(""));
   let treesVisible = fillArray(treeArray);
@@ -51,7 +45,7 @@ const day8 = (input) => {
   treeArray.forEach((row, rowIndex) => {
     row.forEach((col, colIndex) => {
       if (isEdge(treeArray, rowIndex, colIndex)) {
-        treesVisible = setTree(treesVisible, rowIndex, colIndex);
+        treesVisible[rowIndex][colIndex] = 1
       } else if (treesVisible[rowIndex][colIndex] === 0) {
         const treeHeight = treeArray[rowIndex][colIndex];
         const columnAsRow = [];
@@ -68,7 +62,7 @@ const day8 = (input) => {
       }
     });
   });
-  
+
   let visible = 0
   treesVisible.forEach(row => {
     const rowCount = row.reduce((acc, cur) => acc+=cur)
