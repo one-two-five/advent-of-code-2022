@@ -1,4 +1,4 @@
-const { day8, fillArray, setTreeVisibleRow, setTreeVisibleCol } = require("./day8.1");
+const { day8, fillArray, isTreeVisible} = require("./day8.1");
 const readFile = require("../utils/readFile");
 
 test("should match example input", () => {
@@ -9,8 +9,8 @@ test("should match example input", () => {
 
 test("should match final input", () => {
   const input = readFile("./day8/input.txt");
-  // const result = day8(input);
-  // expect(result).toBe(0);
+  const result = day8(input);
+  expect(result).toBe(1543);
 });
 
 describe('fillArray', () => {
@@ -28,48 +28,20 @@ describe('fillArray', () => {
   });
 });
 
-describe('setTreeVisibleRow', () => {
+describe('isTreeVisible', () => {
   test('should set visible', () => {
-    const arr = [[1,2,3,2,1]]
-    const grid = [[0,0,0,0,0]]
-    const expected = [[0,0,1,0,0]]
-    expect(setTreeVisibleRow(arr, grid, 0, 2)).toStrictEqual(expected)
+    const row = [1,2,3,2,1]
+    expect(isTreeVisible(row, 2, 3)).toBe(true);
   });
 
   test('should not set visible - lower', () => {
-    const arr = [[3,2,3,2,1]]
-    const grid = [[0,0,0,0,0]]
-    const expected = [[0,0,0,0,0]]
-    expect(setTreeVisibleRow(arr, grid, 0, 1)).toStrictEqual(expected)
+    const row = [3,2,3,2,1]
+    expect(isTreeVisible(row, 1, 2)).toBe(false);
   });
 
   test('should not set visible - equal', () => {
-    const arr = [[3,3,3,2,1]]
-    const grid = [[0,0,0,0,0]]
-    const expected = [[0,0,0,0,0]]
-    expect(setTreeVisibleRow(arr, grid, 0, 1)).toStrictEqual(expected)
+    const row = [3,3,3,2,1]
+    expect(isTreeVisible(row, 1, 3)).toBe(false);
   });
 });
 
-describe('setTreeVisibleCol', () => {
-  test('should set visible', () => {
-    const arr = [[1],[2],[3],[2],[1]]
-    const grid = [[0],[0],[0],[0],[0]]
-    const expected = [[0],[0],[1],[0],[0]]
-    expect(setTreeVisibleCol(arr, grid, 2, 0)).toStrictEqual(expected)
-  });
-
-  test('should not set visible - lower', () => {
-    const arr = [[3],[2],[3],[2],[1]]
-    const grid = [[0],[0],[0],[0],[0]]
-    const expected = [[0],[0],[0],[0],[0]]
-    expect(setTreeVisibleCol(arr, grid, 1, 0)).toStrictEqual(expected)
-  });
-
-  test('should not set visible - equal', () => {
-    const arr = [[3],[3],[3],[2],[1]]
-    const grid = [[0],[0],[0],[0],[0]]
-    const expected = [[0],[0],[0],[0],[0]]
-    expect(setTreeVisibleCol(arr, grid, 1, 0)).toStrictEqual(expected)
-  });
-});

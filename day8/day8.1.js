@@ -20,45 +20,23 @@ const isEdge = (treeArray, rowIndex, colIndex) => {
 };
 
 const isHighest = (treeHeight, treeArr) => {
-  let isHighest = true
-  treeArr.forEach(tree => {
-    if(tree >= treeHeight) isHighest = false
-  })
-  return isHighest
-}
+  let isHighest = true;
+  treeArr.forEach((tree) => {
+    if (tree >= treeHeight) isHighest = false;
+  });
+  return isHighest;
+};
 
-const setTreeVisibleRow = (treeArray, treesVisible, rowIndex, colIndex) => {
-  const treeArrayCopy = cloneDeep(treeArray);
-  const treesVisibleCopy = cloneDeep(treesVisible);
-  const treeHeight = treeArrayCopy[rowIndex][colIndex]
-  const row = treeArrayCopy[rowIndex]
-  let treeIsVisible = false
+const isTreeVisible = (row, splitIndex, treeHeight) => {
+  let treeIsVisible = false;
 
-  const sliceLeft = row.slice(0, colIndex)
-  const sliceRight = row.slice(colIndex + 1)
- 
-  if(isHighest(treeHeight, sliceLeft) || isHighest(treeHeight, sliceRight)) treeIsVisible = true
-  if(treeIsVisible) treesVisibleCopy[rowIndex][colIndex] = 1
-  return treesVisibleCopy
-}
+  const sliceLeft = row.slice(0, splitIndex);
+  const sliceRight = row.slice(splitIndex + 1);
 
-const setTreeVisibleCol = (treeArray, treesVisible, rowIndex, colIndex) => {
-  const treeArrayCopy = cloneDeep(treeArray);
-  const treesVisibleCopy = cloneDeep(treesVisible);
-  const treeHeight = treeArrayCopy[rowIndex][colIndex]
-  const columnAsRow = []
-  let treeIsVisible = false
-
-  treeArrayCopy.forEach(row => {
-    columnAsRow.push(row[colIndex])
-  })
-  const sliceLeft = columnAsRow.slice(0, rowIndex)
-  const sliceRight = columnAsRow.slice(rowIndex + 1)
- 
-  if(isHighest(treeHeight, sliceLeft) || isHighest(treeHeight, sliceRight)) treeIsVisible = true
-  if(treeIsVisible) treesVisibleCopy[rowIndex][colIndex] = 1
-  return treesVisibleCopy
-}
+  if (isHighest(treeHeight, sliceLeft) || isHighest(treeHeight, sliceRight))
+    treeIsVisible = true;
+  return treeIsVisible;
+};
 
 const setTree = (treesVisible, rowIndex, colIndex) => {
   const treesVisibleCopy = cloneDeep(treesVisible);
@@ -75,14 +53,28 @@ const day8 = (input) => {
       if (isEdge(treeArray, rowIndex, colIndex)) {
         treesVisible = setTree(treesVisible, rowIndex, colIndex);
       } else if (treesVisible[rowIndex][colIndex] === 0) {
-        //scan rows
-        //scan cols
+        const treeHeight = treeArray[rowIndex][colIndex];
+        const columnAsRow = [];
+        treeArray.forEach((row) => {
+          columnAsRow.push(row[colIndex]);
+        });
+        const row = treeArray[rowIndex];
+        if (
+          isTreeVisible(row, colIndex, treeHeight) ||
+          isTreeVisible(columnAsRow, rowIndex, treeHeight)
+        ) {
+          treesVisible[rowIndex][colIndex] = 1;
+        }
       }
     });
   });
-
-  console.log("treesVisible", treesVisible);
-  return 0;
+  
+  let visible = 0
+  treesVisible.forEach(row => {
+    const rowCount = row.reduce((acc, cur) => acc+=cur)
+    visible+=rowCount
+  })
+  return visible;
 };
 
-module.exports = { day8, fillArray, setTreeVisibleRow, setTreeVisibleCol };
+module.exports = { day8, fillArray, isTreeVisible };
