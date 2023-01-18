@@ -15,8 +15,38 @@ const moveHead = (lastPos, newPos) => {
 };
 
 const moveTail = (lastPos, headPos) => {
-  return [];
+  const {row: lastRow, col: lastCol} = lastPos
+  const {row: headRow, col: headCol} = headPos
+  const moves = []
+  // head above
+  if(headRow - lastRow === 2) {
+
+    return{row: lastRow + 1, col: headCol}
+  }
+  // head below
+  if(headRow - lastRow === -2) {
+    return{row: lastRow - 1, col: headCol}
+  }
+  // head right
+  if(headCol - lastCol === 2) {
+    return{row: headRow, col: lastCol + 1}
+  }
+  // head left
+  if(headCol - lastCol === -2) {
+    return{row: headRow, col: lastCol - 1}
+  }
+  return lastPos
 };
+
+const findUnique = (tailPositions) => {
+  const unique = []
+  tailPositions.forEach(pos => {
+    const {row, col} = pos
+    const stringified = `${row}:${col}` 
+    if(unique.includes(stringified) === false) unique.push(stringified)
+  })
+  return unique
+}
 
 const day9 = (input) => {
   const inputArr = input.split("\n").map((move) => {
@@ -24,13 +54,17 @@ const day9 = (input) => {
     return [first, parseInt(second)];
   });
   const headCoords = [{ row: 0, col: 0 }];
-  const tailCoodrs = [{ row: 0, col: 0 }];
-  // grid can be any size so easier to store an object full of coordinates?
-  // e.g. H coodrs = {0,0} move up === {0,1}
-  // T looks in last H move and bases move off that
-  // work out what to add to the previous coordinate for H - up, down, left, right
-  // calculate where T is based on coordinate and add appropriate up, down, left right
-  return 0;
+  const tailCoords = [{ row: 0, col: 0 }];
+
+  inputArr.forEach(move => {
+    const newHeadPos = moveHead(headCoords[headCoords.length - 1], move)
+    const newTailPos = moveTail(tailCoords[tailCoords.length - 1], newHeadPos)
+    headCoords.push(newHeadPos)
+    tailCoords.push(newTailPos)
+  });
+  console.log('headCoords', headCoords)
+  console.log('tailCoords', tailCoords)
+  return findUnique(tailCoords);
 };
 
-module.exports = { day9, moveHead, moveTail };
+module.exports = { day9, moveHead, moveTail, findUnique };
