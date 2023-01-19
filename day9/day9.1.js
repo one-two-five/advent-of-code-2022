@@ -1,26 +1,38 @@
 const moveHead = (lastPos, newPos) => {
   const { row, col } = lastPos;
   const [direction, moves] = newPos;
-
+  const subMoves = []
   switch (direction) {
     case "U":
-      return { row: (row + moves), col: col };
+      for(index=row+1; index<=(row+moves); index++) {
+        subMoves.push({row: index, col:col})
+      }
+      break
     case "D":
-      return { row: (row - moves), col: col };
+      for(index=row-1; index>=(row-moves); index--) {
+        subMoves.push({row: index, col:col})
+      }
+      break
     case "L":
-      return { row: row, col: (col - moves) };
+      for(index=col-1; index>=(col-moves); index--) {
+        subMoves.push({row: row, col:index})
+      }
+      break
     case "R":
-      return { row: row, col: (col + moves) };
+      for(index=col+1; index<=(col+moves); index++) {
+        subMoves.push({row: row, col:index})
+      }
+      break
   }
+  return subMoves
 };
 
 const moveTail = (lastPos, headPos) => {
   const {row: lastRow, col: lastCol} = lastPos
   const {row: headRow, col: headCol} = headPos
-  const moves = []
+
   // head above
   if(headRow - lastRow === 2) {
-
     return{row: lastRow + 1, col: headCol}
   }
   // head below
@@ -57,14 +69,14 @@ const day9 = (input) => {
   const tailCoords = [{ row: 0, col: 0 }];
 
   inputArr.forEach(move => {
-    const newHeadPos = moveHead(headCoords[headCoords.length - 1], move)
-    const newTailPos = moveTail(tailCoords[tailCoords.length - 1], newHeadPos)
-    headCoords.push(newHeadPos)
-    tailCoords.push(newTailPos)
+    const headmoves = moveHead(headCoords[headCoords.length - 1], move)
+    headmoves.forEach(headPos => {
+      const newTailPos = moveTail(tailCoords[tailCoords.length - 1], headPos)
+      headCoords.push(headPos)
+      tailCoords.push(newTailPos)
+    })
   });
-  console.log('headCoords', headCoords)
-  console.log('tailCoords', tailCoords)
-  return findUnique(tailCoords);
+  return findUnique(tailCoords).length;
 };
 
 module.exports = { day9, moveHead, moveTail, findUnique };
