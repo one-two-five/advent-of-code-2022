@@ -1,3 +1,5 @@
+const cloneDeep = require("clone-deep");
+
 const moveHead = (lastPos, newPos) => {
   const { row, col } = lastPos;
   const [direction, moves] = newPos;

@@ -34,6 +34,7 @@ const updateTailPart = (oldPos, targetPos) => {
   const { row: targetRow, col: targetCol } = targetPos;
   // head above
   if (targetRow - oldRow === 2) {
+
     return { row: oldRow + 1, col: targetCol };
   }
   // head below
@@ -62,7 +63,8 @@ const moveTail = (lastTailPosArr, headPos) => {
       newTailPositions.push(move);
     } else {
       if(shouldMove === true) {
-        newTailPositions.push(lastTailPosArr[index - 1]);
+        const move = updateTailPart(tailPart, newTailPositions[index -1])
+        newTailPositions.push(move);
       } else {
         newTailPositions.push(lastTailPosArr[index]);
       }
@@ -86,8 +88,9 @@ const day9 = (input) => {
     const [first, second] = move.split(" ");
     return [first, parseInt(second)];
   });
-  const headCoords = [{ row: 1000, col: 1000 }];
-  let tailCoords = Array(9).fill([{ row: 1000, col: 1000 }]);
+  const headCoords = [{ row: 0, col: 0 }];
+  let tailCoords = Array(9).fill([{ row: 0, col: 0 }]);
+  let visual = []
   
   inputArr.forEach((move) => {
     const headmoves = moveHead(headCoords[headCoords.length - 1], move);
@@ -100,8 +103,21 @@ const day9 = (input) => {
         tailCoords = tailCoordsCopy
       });
       headCoords.push(headPos);
+      // generate table
+      visual = Array(9).fill(Array(9).fill(['.']))
+      // console.table(visual)
+      const visualCopy = cloneDeep(visual)
+      const lastHead = headCoords[headCoords.length -1]
+      visualCopy[lastHead.row][lastHead.col] = 0
+      tailCoords.forEach((tail, index) => {
+        lastTail = tail[tail.length-1]
+        visualCopy[lastTail.row][lastTail.col] = index + 1
+      })
+      visual = visualCopy
+      console.table(visual)
     });
   });
+  // console.log('tailCoords', tailCoords)
   console.log('tailCoords', tailCoords)
   return findUnique(tailCoords.pop()).length;
 };
