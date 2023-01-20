@@ -16,7 +16,7 @@ test("should match example input 2", () => {
 test("should match final input", () => {
   const input = readFile("./day9/input.txt");
   const result = day9(input);
-  expect(result).toBe(6271);
+  expect(result).toBe(2458);
 });
 
 describe("moveHead", () => {
@@ -105,11 +105,11 @@ describe("moveTail", () => {
       },
       {
         row: 8,
-        col: 9,
+        col: 10,
       },
       {
         row: 7,
-        col: 9,
+        col: 10,
       },
     ]);
     expect(
@@ -128,11 +128,11 @@ describe("moveTail", () => {
       },
       {
         row: 8,
-        col: 11,
+        col: 10,
       },
       {
         row: 7,
-        col: 11,
+        col: 10,
       },
     ]);
   });
@@ -170,7 +170,7 @@ describe("moveTail", () => {
       },
       {
         row: 4,
-        col: 5,
+        col: 4,
       },
     ]);
     expect(
@@ -188,7 +188,7 @@ describe("moveTail", () => {
       },
       {
         row: 4,
-        col: 5,
+        col: 6,
       },
     ]);
   });
@@ -225,7 +225,7 @@ describe("moveTail", () => {
         col: 6,
       },
       {
-        row: 4,
+        row: 3,
         col: 5,
       },
     ]);
@@ -243,7 +243,7 @@ describe("moveTail", () => {
         col: 6,
       },
       {
-        row: 4,
+        row: 5,
         col: 5,
       },
     ]);
@@ -281,7 +281,7 @@ describe("moveTail", () => {
         col: 3,
       },
       {
-        row: 4,
+        row: 3,
         col: 4,
       },
     ]);
@@ -299,7 +299,7 @@ describe("moveTail", () => {
         col: 3,
       },
       {
-        row: 4,
+        row: 1,
         col: 4,
       },
     ]);

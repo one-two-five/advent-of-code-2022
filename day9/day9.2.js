@@ -1,4 +1,4 @@
-const cloneDeep = require('clone-deep')
+const cloneDeep = require("clone-deep");
 
 const moveHead = (lastPos, newPos) => {
   const { row, col } = lastPos;
@@ -34,10 +34,10 @@ const updateTailPart = (oldPos, targetPos) => {
   const { row: targetRow, col: targetCol } = targetPos;
   // head above
   if (targetRow - oldRow === 2) {
-    const coldiff = targetCol - oldCol
-    if(coldiff === 2) {
+    const coldiff = targetCol - oldCol;
+    if (coldiff === 2) {
       return { row: oldRow + 1, col: oldCol + 1 };
-    } else if(coldiff === -2) {
+    } else if (coldiff === -2) {
       return { row: oldRow + 1, col: oldCol - 1 };
     } else {
       return { row: oldRow + 1, col: targetCol };
@@ -45,10 +45,10 @@ const updateTailPart = (oldPos, targetPos) => {
   }
   // head below
   if (targetRow - oldRow === -2) {
-    const coldiff = targetCol - oldCol
-    if(coldiff === 2) {
+    const coldiff = targetCol - oldCol;
+    if (coldiff === 2) {
       return { row: oldRow - 1, col: oldCol + 1 };
-    } else if(coldiff === -2) {
+    } else if (coldiff === -2) {
       return { row: oldRow - 1, col: oldCol - 1 };
     } else {
       return { row: oldRow - 1, col: targetCol };
@@ -56,10 +56,10 @@ const updateTailPart = (oldPos, targetPos) => {
   }
   // head right
   if (targetCol - oldCol === 2) {
-    const rowDiff = targetRow - oldRow
-    if(rowDiff === 2) {
+    const rowDiff = targetRow - oldRow;
+    if (rowDiff === 2) {
       return { row: oldRow + 1, col: oldCol + 1 };
-    } else if(rowDiff === -2) {
+    } else if (rowDiff === -2) {
       return { row: oldRow - 1, col: oldCol + 1 };
     } else {
       return { row: targetRow, col: oldCol + 1 };
@@ -67,10 +67,10 @@ const updateTailPart = (oldPos, targetPos) => {
   }
   // head left
   if (targetCol - oldCol === -2) {
-    const rowDiff = targetRow - oldRow
-    if(rowDiff === 2) {
+    const rowDiff = targetRow - oldRow;
+    if (rowDiff === 2) {
       return { row: oldRow + 1, col: oldCol - 1 };
-    } else if(rowDiff === -2) {
+    } else if (rowDiff === -2) {
       return { row: oldRow - 1, col: oldCol - 1 };
     } else {
       return { row: targetRow, col: oldCol - 1 };
@@ -89,8 +89,8 @@ const moveTail = (lastTailPosArr, headPos) => {
         shouldMove = true;
       newTailPositions.push(move);
     } else {
-      if(shouldMove === true) {
-        const move = updateTailPart(tailPart, newTailPositions[index -1])
+      if (shouldMove === true) {
+        const move = updateTailPart(tailPart, newTailPositions[index - 1]);
         newTailPositions.push(move);
       } else {
         newTailPositions.push(lastTailPosArr[index]);
@@ -116,37 +116,26 @@ const day9 = (input) => {
     return [first, parseInt(second)];
   });
   const headCoords = [{ row: 0, col: 0 }];
-  // let tailCoords = Array(9).fill([{ row: 0, col: 0 }]);
-  // let visual = []
-  
+  let tailCoords = Array(9).fill([{ row: 0, col: 0 }]);
+  let lastTailCoords = [];
+
   inputArr.forEach((move) => {
     const headmoves = moveHead(headCoords[headCoords.length - 1], move);
     headmoves.forEach((headPos) => {
       const lastCoords = tailCoords.map((coord) => coord[coord.length - 1]);
       const newTailPositions = moveTail(lastCoords, headPos);
       newTailPositions.forEach((pos, index) => {
-        const tailCoordsCopy = cloneDeep(tailCoords)
-        tailCoordsCopy[index].push(pos)
-        tailCoords = tailCoordsCopy
+        const tailCoordsCopy = cloneDeep(tailCoords);
+        tailCoordsCopy[index][0] = pos;
+        if (index === 8) {
+          lastTailCoords.push(pos)
+        }
+        tailCoords = tailCoordsCopy;
       });
       headCoords.push(headPos);
-      // generate table
-      // visual = Array(9).fill(Array(9).fill(['.']))
-      // // console.table(visual)
-      // const visualCopy = cloneDeep(visual)
-      // const lastHead = headCoords[headCoords.length -1]
-      // visualCopy[lastHead.row][lastHead.col] = 0
-      // tailCoords.forEach((tail, index) => {
-      //   lastTail = tail[tail.length-1]
-      //   visualCopy[lastTail.row][lastTail.col] = index + 1
-      // })
-      // visual = visualCopy
-      // console.table(visual)
     });
   });
-  // console.log('tailCoords', tailCoords)
-  // console.log('tailCoords', tailCoords)
-  return findUnique(tailCoords.pop()).length;
+  return findUnique(lastTailCoords).length;
 };
 
 module.exports = { day9, moveHead, moveTail, findUnique };
