@@ -34,20 +34,47 @@ const updateTailPart = (oldPos, targetPos) => {
   const { row: targetRow, col: targetCol } = targetPos;
   // head above
   if (targetRow - oldRow === 2) {
-
-    return { row: oldRow + 1, col: targetCol };
+    const coldiff = targetCol - oldCol
+    if(coldiff === 2) {
+      return { row: oldRow + 1, col: oldCol + 1 };
+    } else if(coldiff === -2) {
+      return { row: oldRow + 1, col: oldCol - 1 };
+    } else {
+      return { row: oldRow + 1, col: targetCol };
+    }
   }
   // head below
   if (targetRow - oldRow === -2) {
-    return { row: oldRow - 1, col: targetCol };
+    const coldiff = targetCol - oldCol
+    if(coldiff === 2) {
+      return { row: oldRow - 1, col: oldCol + 1 };
+    } else if(coldiff === -2) {
+      return { row: oldRow - 1, col: oldCol - 1 };
+    } else {
+      return { row: oldRow - 1, col: targetCol };
+    }
   }
   // head right
   if (targetCol - oldCol === 2) {
-    return { row: targetRow, col: oldCol + 1 };
+    const rowDiff = targetRow - oldRow
+    if(rowDiff === 2) {
+      return { row: oldRow + 1, col: oldCol + 1 };
+    } else if(rowDiff === -2) {
+      return { row: oldRow - 1, col: oldCol + 1 };
+    } else {
+      return { row: targetRow, col: oldCol + 1 };
+    }
   }
   // head left
   if (targetCol - oldCol === -2) {
-    return { row: targetRow, col: oldCol - 1 };
+    const rowDiff = targetRow - oldRow
+    if(rowDiff === 2) {
+      return { row: oldRow + 1, col: oldCol - 1 };
+    } else if(rowDiff === -2) {
+      return { row: oldRow - 1, col: oldCol - 1 };
+    } else {
+      return { row: targetRow, col: oldCol - 1 };
+    }
   }
   return oldPos;
 };
@@ -89,8 +116,8 @@ const day9 = (input) => {
     return [first, parseInt(second)];
   });
   const headCoords = [{ row: 0, col: 0 }];
-  let tailCoords = Array(9).fill([{ row: 0, col: 0 }]);
-  let visual = []
+  // let tailCoords = Array(9).fill([{ row: 0, col: 0 }]);
+  // let visual = []
   
   inputArr.forEach((move) => {
     const headmoves = moveHead(headCoords[headCoords.length - 1], move);
@@ -104,21 +131,21 @@ const day9 = (input) => {
       });
       headCoords.push(headPos);
       // generate table
-      visual = Array(9).fill(Array(9).fill(['.']))
+      // visual = Array(9).fill(Array(9).fill(['.']))
+      // // console.table(visual)
+      // const visualCopy = cloneDeep(visual)
+      // const lastHead = headCoords[headCoords.length -1]
+      // visualCopy[lastHead.row][lastHead.col] = 0
+      // tailCoords.forEach((tail, index) => {
+      //   lastTail = tail[tail.length-1]
+      //   visualCopy[lastTail.row][lastTail.col] = index + 1
+      // })
+      // visual = visualCopy
       // console.table(visual)
-      const visualCopy = cloneDeep(visual)
-      const lastHead = headCoords[headCoords.length -1]
-      visualCopy[lastHead.row][lastHead.col] = 0
-      tailCoords.forEach((tail, index) => {
-        lastTail = tail[tail.length-1]
-        visualCopy[lastTail.row][lastTail.col] = index + 1
-      })
-      visual = visualCopy
-      console.table(visual)
     });
   });
   // console.log('tailCoords', tailCoords)
-  console.log('tailCoords', tailCoords)
+  // console.log('tailCoords', tailCoords)
   return findUnique(tailCoords.pop()).length;
 };
 
