@@ -10,6 +10,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
   },
+  "allowAllPropertiesOnSameLine": true,
   "no-param-reassign": [
     "error",
     {

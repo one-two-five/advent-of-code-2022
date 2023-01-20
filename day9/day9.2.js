@@ -1,3 +1,5 @@
+const cloneDeep = require('clone-deep')
+
 const moveHead = (lastPos, newPos) => {
   const { row, col } = lastPos;
   const [direction, moves] = newPos;
@@ -50,9 +52,7 @@ const updateTailPart = (oldPos, targetPos) => {
 };
 
 const moveTail = (lastTailPosArr, headPos) => {
-  // console.log('lastTailPosArr', lastTailPosArr)
   const newTailPositions = [];
-  let lastMove;
   let shouldMove = false;
   lastTailPosArr.forEach((tailPart, index) => {
     if (index === 0) {
@@ -61,9 +61,6 @@ const moveTail = (lastTailPosArr, headPos) => {
         shouldMove = true;
       newTailPositions.push(move);
     } else {
-      // const move = updateTailPart(tailPart, lastMove)
-      // newTailPositions.push(move)
-      // lastMove = move
       if(shouldMove === true) {
         newTailPositions.push(lastTailPosArr[index - 1]);
       } else {
@@ -90,27 +87,22 @@ const day9 = (input) => {
     return [first, parseInt(second)];
   });
   const headCoords = [{ row: 1000, col: 1000 }];
-  const tailCoords = Array(9).fill([{ row: 1000, col: 1000 }]);
-  // console.log('tailCoords', tailCoords)
-
+  let tailCoords = Array(9).fill([{ row: 1000, col: 1000 }]);
+  
   inputArr.forEach((move) => {
     const headmoves = moveHead(headCoords[headCoords.length - 1], move);
-    // console.log('headmoves', headmoves)
     headmoves.forEach((headPos) => {
       const lastCoords = tailCoords.map((coord) => coord[coord.length - 1]);
-      // console.log('lastCoords', lastCoords)
       const newTailPositions = moveTail(lastCoords, headPos);
       newTailPositions.forEach((pos, index) => {
-        // console.log('index', index)
-        // console.log('pos', pos)
-        // console.log('tailCoords.length', tailCoords[0].length)
-        tailCoords[index].push(pos);
+        const tailCoordsCopy = cloneDeep(tailCoords)
+        tailCoordsCopy[index].push(pos)
+        tailCoords = tailCoordsCopy
       });
       headCoords.push(headPos);
     });
   });
-  console.log("tailCoords", tailCoords);
-  // console.log('headCoords', headCoords)
+  console.log('tailCoords', tailCoords)
   return findUnique(tailCoords.pop()).length;
 };
 
