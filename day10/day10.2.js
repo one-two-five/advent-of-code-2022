@@ -1,15 +1,10 @@
 const cloneDeep = require("clone-deep");
 
 const updatePixels = (cycle, signal) => {
-  // console.log('cycle', cycle)
-  // console.log('signal', signal)
   const newCycle = (cycle - 1) % 40
-  // console.log('newCycle', newCycle)
-  
   if (signal < (newCycle + 2) && (signal > newCycle - 2)) {
     const col = newCycle
     const row = Math.floor((cycle - 1) / 40);
-    // console.log('row', row)
     return [row, col];
   }
   return null;
@@ -42,7 +37,6 @@ const day10 = (input) => {
   let cycle = 1;
   let signal = 1;
   inputArr.forEach((ins) => {
-    // console.log('cycle', cycle)
     if (ins[0] === "noop") {
       pixelArray = updatePixelArray(cycle, signal, pixelArray);
       cycle += 1;
