@@ -33,9 +33,9 @@ const day10 = (input) => {
     });
 
   let pixelArray = Array(6).fill(Array(40).fill('.'));
-
   let cycle = 1;
   let signal = 1;
+  
   inputArr.forEach((ins) => {
     if (ins[0] === "noop") {
       pixelArray = updatePixelArray(cycle, signal, pixelArray);
