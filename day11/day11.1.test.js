@@ -1,4 +1,4 @@
-const { day11, transformInput, handleMonkeyTurn } = require("./day11.1");
+const { day11, transformInput, handleMonkeyTurn, handleOperation } = require("./day11.1");
 const readFile = require("../utils/readFile");
 
 test("should match example input", () => {
@@ -57,19 +57,22 @@ describe("handleMonkeyTurn", () => {
 });
 
 describe('handleOperation', () => {
+
   test('should apply +', () => {
-    
+    expect(handleOperation(5, '+', 10)).toBe(15)
+    expect(handleOperation(5, '+', 'old')).toBe(10)
   });
   test('should apply -', () => {
-    
+    expect(handleOperation(5, '-', 2)).toBe(3)
+    expect(handleOperation(5, '-', 'old')).toBe(0)
   });
   test('should apply *', () => {
-    
+    expect(handleOperation(5, '*', 6)).toBe(30)
+    expect(handleOperation(5, '*', 'old')).toBe(25)
   });
   test('should apply /', () => {
-    
+    expect(handleOperation(8, '/', 2)).toBe(4)
+    expect(handleOperation(8, '/', 'old')).toBe(1)
   });
-  test('should handle operation if both params are old', () => {
-    
-  });
+  
 });
