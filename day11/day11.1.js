@@ -15,8 +15,8 @@ const transformInput = (monkey, index) => {
   ];
 };
 
-const handleOperation = (oldValue, operation, newValue) => {
-  const value = newValue === "old" ? oldValue : newValue;
+const handleOperation = (oldValue, operation, opValue) => {
+  const value = opValue === "old" ? parseInt(oldValue) : parseInt(opValue);
   switch (operation) {
     case "+":
       return oldValue + value;
@@ -30,19 +30,18 @@ const handleOperation = (oldValue, operation, newValue) => {
 };
 
 const handleMonkeyTurn = (monkey, index, monkeyArr) => {
-  const [_, values, operation, test, trueMonkey, falseMonkey, inspections] =
-    monkey;
+  const [_, values = [], operation, test, trueMonkey, falseMonkey, inspections] =
+  monkey;
   const monkeyArrCopy = cloneDeep(monkeyArr);
   let inspectionCount = inspections;
-
+  
   if (values.length > 0) {
     values.forEach((value) => {
-      const updatedValue = handleOperation(value, operation);
+      const [op, opValue] = operation
+      const updatedValue = handleOperation(value, op, opValue);
       const finalValue = Math.floor(updatedValue / 3);
-      const targetMonkey = finalValue / test === 0 ? trueMonkey : falseMonkey;
-      const monkeyCopy = cloneDeep(monkeyArrCopy[targetMonkey]);
-      monkeyCopy[1] = [...monkeyCopy[1], finalValue];
-      monkeyArrCopy[targetMonkey] = monkeyCopy;
+      const targetMonkey = finalValue % test === 0 ? parseInt(trueMonkey) : parseInt(falseMonkey);
+      monkeyArrCopy[targetMonkey][1].push(finalValue)
       inspectionCount += 1;
     });
     monkeyArrCopy[index][6] = inspectionCount;
@@ -56,25 +55,12 @@ const day11 = (input) => {
   let monkeyArr = inputArr.map((monkey, index) => {
     return transformInput(monkey, index);
   });
-
   for (let index = 0; index < 20; index++) {
-    monkeyArr.forEach((monkey, index) => {
-      monkeyArr = handleMonkeyTurn(monkey, index, monkeyArr);
-    });
+    for (let monkeyIndex = 0; monkeyIndex < monkeyArr.length; monkeyIndex++) {
+      monkeyArr = handleMonkeyTurn(monkeyArr[monkeyIndex], monkeyIndex, monkeyArr)
+    }
   }
-
-  // monkey inpects left most value
-  // operation is applied to the value
-  // value divided by 3 and rounded down to nearest int
-  // test applied to value
-  // item is thrown to another monkey based on whether test is TRUE or FALSE
-  // when an item is thrown it is added to the end of the monkey's value list
-
-  // if monkey has no values at the start of the turn the monkeys turn ends
-  // in each round the money inspects and throws all values that they have
-  // count for 20 rounds
-  // find the 2 monkeys who do the most item inpections (most active monkeys)
-  console.log("monkeyArr", monkeyArr);
-  return 0;
+  const [final1, final2] = (monkeyArr.sort((a,b) => b[6]-a[6]).slice(0,2))
+  return final1[6] * final2[6];
 };
 module.exports = { day11, transformInput, handleMonkeyTurn, handleOperation };

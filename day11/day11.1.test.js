@@ -4,13 +4,13 @@ const readFile = require("../utils/readFile");
 test("should match example input", () => {
   const input = readFile("./day11/example.txt");
   const result = day11(input);
-  expect(result).toBe(0);
+  expect(result).toBe(10605);
 });
 
 test("should match final input", () => {
   const input = readFile("./day11/input.txt");
-  // const result = day11(input);
-  // expect(result).toBe(14760);
+  const result = day11(input);
+  expect(result).toBe(102399);
 });
 
 describe("transformInput", () => {
