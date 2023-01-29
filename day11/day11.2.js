@@ -39,8 +39,8 @@ const handleMonkeyTurn = (monkey, index, monkeyArr) => {
     values.forEach((value) => {
       const [op, opValue] = operation
       const updatedValue = handleOperation(value, op, opValue);
-      const finalValue = Math.floor(updatedValue / 3);
-      const targetMonkey = finalValue % test === 0 ? parseInt(trueMonkey) : parseInt(falseMonkey);
+      // const finalValue = Math.floor(updatedValue / 3);
+      const targetMonkey = updatedValue % test === 0 ? parseInt(trueMonkey) : parseInt(falseMonkey);
       monkeyArrCopy[targetMonkey][1].push(finalValue)
       inspectionCount += 1;
     });
