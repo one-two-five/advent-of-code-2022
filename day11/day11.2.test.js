@@ -1,10 +1,10 @@
-const { day11, transformInput, handleMonkeyTurn, handleOperation } = require("./day11.1");
+const { day11, transformInput, handleMonkeyTurn, handleOperation } = require("./day11.2");
 const readFile = require("../utils/readFile");
 
 test("should match example input", () => {
   const input = readFile("./day11/example.txt");
   const result = day11(input);
-  // expect(result).toBe(0);
+  expect(result).toBe(2713310158);
 });
 
 test("should match final input", () => {
@@ -29,7 +29,7 @@ describe("transformInput", () => {
 });
 
 describe("handleMonkeyTurn", () => {
-  test("should process monkey values and update array", () => {
+  test("should process monkey values and update array 1", () => {
     const monkeyArr = [
       [0, [74, 35], ["*", "3"], 2, 1, 2, 0],
       [1, [], ["-", "3"], 17, 0, 1, 0],
@@ -37,8 +37,40 @@ describe("handleMonkeyTurn", () => {
     ];
     const expectedArr = [
       [0, [], ["*", "3"], 2, 1, 2, 2],
-      [1, [74], ["-", "3"], 17, 0, 1, 0],
-      [2, [35], ["-", "3"], 18, 0, 1, 0],
+      [1, [222], ["-", "3"], 17, 0, 1, 0],
+      [2, [105], ["-", "3"], 18, 0, 1, 0],
+    ];
+    const monkey = monkeyArr[0];
+    const updatedArr = handleMonkeyTurn(monkey, 0, monkeyArr)
+    expect(updatedArr).toStrictEqual(expectedArr)
+  });
+
+  test("should process monkey values and update array 2", () => {
+    const monkeyArr = [
+      [0, [74, 35], ["-", "4"], 2, 1, 2, 0],
+      [1, [], ["-", "3"], 17, 0, 1, 0],
+      [2, [], ["-", "3"], 18, 0, 1, 0],
+    ];
+    const expectedArr = [
+      [0, [], ["-", "4"], 2, 1, 2, 2],
+      [1, [70], ["-", "3"], 17, 0, 1, 0],
+      [2, [31], ["-", "3"], 18, 0, 1, 0],
+    ];
+    const monkey = monkeyArr[0];
+    const updatedArr = handleMonkeyTurn(monkey, 0, monkeyArr)
+    expect(updatedArr).toStrictEqual(expectedArr)
+  });
+
+  test("should process monkey values and update array 3", () => {
+    const monkeyArr = [
+      [0, [74, 35], ["+", "4"], 2, 1, 2, 0],
+      [1, [], ["-", "3"], 17, 0, 1, 0],
+      [2, [], ["-", "3"], 18, 0, 1, 0],
+    ];
+    const expectedArr = [
+      [0, [], ["+", "4"], 2, 1, 2, 2],
+      [1, [78], ["-", "3"], 17, 0, 1, 0],
+      [2, [39], ["-", "3"], 18, 0, 1, 0],
     ];
     const monkey = monkeyArr[0];
     const updatedArr = handleMonkeyTurn(monkey, 0, monkeyArr)
