@@ -74,7 +74,7 @@ const day11 = (input) => {
   });
   console.log('monkeyArr', monkeyArr)
 
-  for (let index = 0; index < 20; index++) {
+  for (let index = 0; index < 1000; index++) {
     for (let monkeyIndex = 0; monkeyIndex < monkeyArr.length; monkeyIndex++) {
       monkeyArr = handleMonkeyTurn(monkeyArr[monkeyIndex], monkeyIndex, monkeyArr)
     }
