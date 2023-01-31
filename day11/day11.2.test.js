@@ -23,7 +23,7 @@ describe("transformInput", () => {
       "    If true: throw to monkey 0",
       "    If false: throw to monkey 1",
     ];
-    const expected = [3, [74], ["+", "3"], 17, 0, 1, 0];
+    const expected = [3, [74n], ["+", 3n], 17n, 0n, 1n, 0n];
     expect(transformInput(monkey, 3)).toStrictEqual(expected);
   });
 });
@@ -31,14 +31,14 @@ describe("transformInput", () => {
 describe("handleMonkeyTurn", () => {
   test("should process monkey values and update array 1", () => {
     const monkeyArr = [
-      [0, [74, 35], ["*", "3"], 2, 1, 2, 0],
-      [1, [], ["-", "3"], 17, 0, 1, 0],
-      [2, [], ["-", "3"], 18, 0, 1, 0],
+      [0n, [74n, 35n], ["*", 3n], 2n, 1n, 2n, 0n],
+      [1n, [], ["-", 3n], 17n, 0n, 1n, 0n],
+      [2n, [], ["-", 3n], 18n, 0n, 1n, 0n],
     ];
     const expectedArr = [
-      [0, [], ["*", "3"], 2, 1, 2, 2],
-      [1, [222], ["-", "3"], 17, 0, 1, 0],
-      [2, [105], ["-", "3"], 18, 0, 1, 0],
+      [0n, [], ["*", 3n], 2n, 1n, 2n, 2n],
+      [1n, [222n], ["-", 3n], 17n, 0n, 1n, 0n],
+      [2n, [105n], ["-", 3n], 18n, 0n, 1n, 0n],
     ];
     const monkey = monkeyArr[0];
     const updatedArr = handleMonkeyTurn(monkey, 0, monkeyArr)
@@ -47,14 +47,14 @@ describe("handleMonkeyTurn", () => {
 
   test("should process monkey values and update array 2", () => {
     const monkeyArr = [
-      [0, [74, 35], ["-", "4"], 2, 1, 2, 0],
-      [1, [], ["-", "3"], 17, 0, 1, 0],
-      [2, [], ["-", "3"], 18, 0, 1, 0],
+      [0n, [74n, 35n], ["-", 4n], 2n, 1n, 2n, 0n],
+      [1n, [], ["-", 3n], 17n, 0n, 1n, 0n],
+      [2n, [], ["-", 3n], 18n, 0n, 1n, 0n],
     ];
     const expectedArr = [
-      [0, [], ["-", "4"], 2, 1, 2, 2],
-      [1, [70], ["-", "3"], 17, 0, 1, 0],
-      [2, [31], ["-", "3"], 18, 0, 1, 0],
+      [0n, [], ["-", 4n], 2n, 1n, 2n, 2n],
+      [1n, [70n], ["-", 3n], 17n, 0n, 1n, 0n],
+      [2n, [31n], ["-", 3n], 18n, 0n, 1n, 0n],
     ];
     const monkey = monkeyArr[0];
     const updatedArr = handleMonkeyTurn(monkey, 0, monkeyArr)
@@ -63,14 +63,14 @@ describe("handleMonkeyTurn", () => {
 
   test("should process monkey values and update array 3", () => {
     const monkeyArr = [
-      [0, [74, 35], ["+", "4"], 2, 1, 2, 0],
-      [1, [], ["-", "3"], 17, 0, 1, 0],
-      [2, [], ["-", "3"], 18, 0, 1, 0],
+      [0n, [74n, 35n], ["+", 4n], 2n, 1n, 2n, 0n],
+      [1n, [], ["-", 3n], 17n, 0n, 1n, 0n],
+      [2n, [], ["-", 3n], 18n, 0n, 1n, 0n],
     ];
     const expectedArr = [
-      [0, [], ["+", "4"], 2, 1, 2, 2],
-      [1, [78], ["-", "3"], 17, 0, 1, 0],
-      [2, [39], ["-", "3"], 18, 0, 1, 0],
+      [0n, [], ["+", 4n], 2n, 1n, 2n, 2n],
+      [1n, [78n], ["-", 3n], 17n, 0n, 1n, 0n],
+      [2n, [39n], ["-", 3n], 18n, 0n, 1n, 0n],
     ];
     const monkey = monkeyArr[0];
     const updatedArr = handleMonkeyTurn(monkey, 0, monkeyArr)
@@ -79,8 +79,8 @@ describe("handleMonkeyTurn", () => {
 
   test("should return original array if money has no values", () => {
     const monkeyArr = [
-      [0, [], ["+", "3"], 17, 0, 1, 0],
-      [1, [], ["-", "3"], 17, 0, 1, 0],
+      [0n, [], ["+", 3n], 17n, 0n, 1n, 0n],
+      [1n, [], ["-", 3n], 17n, 0n, 1n, 0n],
     ];
     const monkey = monkeyArr[0];
     const updatedArr = handleMonkeyTurn(monkey, 0, monkeyArr);
