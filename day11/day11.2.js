@@ -38,7 +38,7 @@ const handleOperation = (oldValue, operation, opValue) => {
   }
 };
 
-const handleMonkeyTurn = (monkey, index, monkeyArr) => {
+const handleMonkeyTurn = (monkey, index, monkeyArr, lcm) => {
   const [_, values = [], operation, test, trueMonkey, falseMonkey, inspections] =
   monkey;
   const monkeyArrCopy = cloneDeep(monkeyArr);
@@ -46,8 +46,9 @@ const handleMonkeyTurn = (monkey, index, monkeyArr) => {
   values.forEach((value) => {
     const [op, opValue] = operation
     const updatedValue = BigInt(handleOperation(value, op, opValue));
-    const targetMonkey = updatedValue % test === BigInt(0) ? trueMonkey : falseMonkey;
-    monkeyArrCopy[targetMonkey][1].push(updatedValue)
+    const finalValue = updatedValue % lcm
+    const targetMonkey = finalValue % test === BigInt(0) ? trueMonkey : falseMonkey;
+    monkeyArrCopy[targetMonkey][1].push(finalValue)
     inspectionCount += 1;
   });
   monkeyArrCopy[index][6] = inspectionCount;
@@ -60,10 +61,13 @@ const day11 = (input) => {
   let monkeyArr = inputArr.map((monkey, index) => {
     return transformInput(monkey, index);
   });
+
+  const tests = monkeyArr.map(monkey => monkey[3])
+  const lcm = tests.reduce((acc, cur) => acc * cur)
   
-  for (let index = 0; index < 20; index++) {
+  for (let index = 0; index < 10000; index++) {
     for (let monkeyIndex = 0; monkeyIndex < monkeyArr.length; monkeyIndex++) {
-      monkeyArr = handleMonkeyTurn(monkeyArr[monkeyIndex], monkeyIndex, monkeyArr)
+      monkeyArr = handleMonkeyTurn(monkeyArr[monkeyIndex], monkeyIndex, monkeyArr, lcm)
     }
   }
 
